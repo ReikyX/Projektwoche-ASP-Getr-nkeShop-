@@ -1,4 +1,6 @@
-﻿namespace DrinkShop.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DrinkShop.Models;
 
 public class CartItem
 {
@@ -9,4 +11,6 @@ public class CartItem
     public int Quantity { get; set; }
 
     public string UserId { get; set; }
+    [ForeignKey("UserId")]
+    public ApplicationUser User { get; set; }
 }

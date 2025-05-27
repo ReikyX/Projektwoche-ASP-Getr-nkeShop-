@@ -1,47 +1,59 @@
 ﻿@model IEnumerable<DrinkShop.Models.CartItem>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Warenkorb";
+    decimal gesamtpreis = Model.Sum(item => item.Product.Price * item.Quantity);
 }
 
-<h1>Index</h1>
+<h1 class="mb-4"><i class="bi bi-cart3"></i> Mein Warenkorb</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        Dein Warenkorb ist leer. <a asp-controller="Products" asp-action="Index">Jetzt Produkte entdecken!</a>
+    </div>
 }
-    </tbody>
-</table>
+else
+{
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Produkt</th>
+                <th class="text-center">Menge</th>
+                <th class="text-end">Einzelpreis</th>
+                <th class="text-end">Zwischensumme</th>
+                <th class="text-center">Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Product.ImageUrl" alt="@item.Product.Name"
+                             class="me-2 rounded" style="width: 50px; height: auto; object-fit: contain;" />
+                        <strong>@item.Product.Name</strong>
+                    </td>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-end">@item.Product.Price.ToString("0.00") €</td>
+                    <td class="text-end">@((item.Product.Price * item.Quantity).ToString("0.00")) €</td>
+                    <td class="text-center">
+                        <form asp-action="IncreaseQuantity" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-success" title="Mehr"><i class="bi bi-plus-circle"></i></button>
+                        </form>
+                        <form asp-action="DecreaseQuantity" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-warning" title="Weniger"><i class="bi bi-dash-circle"></i></button>
+                        </form>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Entfernen"><i class="bi bi-trash3"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-end">
+        <h4>Gesamtbetrag: <span class="text-success fw-bold">@gesamtpreis.ToString("0.00") €</span></h4>
+        <a href="#" class="btn btn-primary mt-3">Zur Kasse</a>
+    </div>
+}

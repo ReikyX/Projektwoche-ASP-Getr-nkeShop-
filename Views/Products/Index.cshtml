@@ -1,33 +1,71 @@
 ﻿@model IEnumerable<DrinkShop.Models.Product>
 
 @{
-    ViewData["Title"] = "Produkte";
+	ViewData["Title"] = "Produkte";
 }
 
 <h1 class="text-center mb-4">Unsere Getränke</h1>
 
-<p class="text-end">
-    <a asp-action="Create" class="btn btn-success">+ Neues Produkt</a>
-</p>
 
+@if (User.IsInRole("Admin"))
+{
+	<p class="text-end">
+		<a asp-action="Create" class="btn btn-success">+ Neues Produkt</a>
+	</p>
+}
 <div id="productList" class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model)
-    {
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text text-muted">@item.Description</p>
-                    <p class="card-text fw-bold">@item.Price.ToString("0.00") €</p>
-                    <p class="badge bg-primary">@item.Category?.CategoryName</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Bearbeiten</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Löschen</a>
-                </div>
-            </div>
-        </div>
-    }
+	@foreach (var item in Model)
+	{
+		<div class="col">
+			<div class="card h-100 shadow-sm">
+				<img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+				<div class="card-body">
+					<h5 class="card-title">@item.Name</h5>
+					<p class="card-text text-muted">@item.Description</p>
+					<p class="card-text fw-bold">@item.Price.ToString("0.00") €</p>
+					<p class="badge bg-primary">@item.Category?.CategoryName</p>
+				</div>
+				<div class="card-footer d-flex justify-content-between">
+
+					@if (User.Identity.IsAuthenticated &&
+										item.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+					{
+						<!-- Inhaber-Ansicht -->
+						<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
+						<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Bearbeiten</a>
+						<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Löschen</a>
+					}
+					else
+					{
+						<!-- Gast oder anderer Benutzer -->
+						@if (User.Identity.IsAuthenticated)
+						{
+							<form class="add-to-cart-form" data-product-id="@item.Id" method="post" action="@Url.Action("AddToCart", "CartItems")">
+								<input type="hidden" name="productId" value="@item.Id" />
+								<button type="submit" class="btn btn-sm btn-success w-100">🛒 In den Warenkorb</button>
+							</form>
+						}
+						else
+						{
+							<a class="btn btn-sm btn-success w-100" asp-controller="Account" asp-action="Login">
+								🛒 Jetzt einloggen um zu bestellen
+							</a>
+						}
+					}
+
+				</div>
+			</div>
+		</div>
+	}
 </div>
+@section Scripts {
+	<script>
+		document.getElementById('categoryFilter')?.addEventListener('change', function () {
+			const selectedCategoryId = this.value;
+			const url = selectedCategoryId
+				? `/Products/Index?categoryId=${selectedCategoryId}`
+				: '/Products/Index';
+			window.location.href = url;
+		});
+	</script>
+}

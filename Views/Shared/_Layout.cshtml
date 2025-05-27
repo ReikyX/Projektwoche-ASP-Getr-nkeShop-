@@ -25,15 +25,55 @@
                     <i class="bi bi-cup-straw"></i> DrinkShop
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
-                        aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarMain">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" asp-controller="Products" asp-action="Index">Produkte</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Categories" asp-action="Index">Kategorien</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="CartItems" asp-action="Index">Warenkorb</a></li>
+
+                        <!-- Kategorien Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Kategorien
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
+                                <li>
+                                    <a class="dropdown-item @(ViewBag.SelectedCategory == null ? "active" : "")"
+                                       asp-controller="Products" asp-action="Index" asp-route-categoryId="">
+                                        Alle Kategorien
+                                    </a>
+                                </li>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    var categories = ViewBag.Categories as List<DrinkShop.Models.Category>;
+                                    if (categories != null)
+                                    {
+                                        foreach (var category in categories)
+                                        {
+                                            <li>
+                                                <a class="dropdown-item @(category.Id == (int?)ViewBag.SelectedCategory ? "active" : "")"
+                                                   asp-controller="Products" asp-action="Index" asp-route-categoryId="@category.Id">
+                                                    @category.CategoryName
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </li>
+
+
+                        <!-- Warenkorb -->
+                        <li class="nav-item position-relative">
+                            <a class="nav-link position-relative" asp-controller="CartItems" asp-action="Index" id="cart-link" title="Zum Warenkorb">
+                                <i class="bi bi-cart3 fs-5"></i>
+                                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                                    @(ViewBag.CartItemCount ?? 0)
+                                </span>
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Suchleiste -->
@@ -41,6 +81,8 @@
                         <input id="liveSearch" class="form-control form-control-sm me-2" type="search" placeholder="Suche..." aria-label="Suche" autocomplete="off">
                         <div id="searchResults" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
                     </div>
+
+
 
                     <!-- Auth Buttons -->
                     <div class="d-flex">

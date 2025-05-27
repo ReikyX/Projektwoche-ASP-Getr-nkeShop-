@@ -22,11 +22,23 @@ namespace DrinkShop.Controllers
 
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
-            var appDbContext = _context.Products.Include(p => p.Category);
-            return View(await appDbContext.ToListAsync());
+            ViewBag.Categories = await _context.Categories.ToListAsync();
+            ViewBag.SelectedCategory = categoryId;
+
+            IQueryable<Product> products = _context.Products.Include(p => p.Category);
+
+            if (categoryId.HasValue)
+            {
+                products = products.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+
+            return View(await products.ToListAsync());
         }
+
+
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -63,6 +75,17 @@ namespace DrinkShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                // UserId setzen
+                product.UserId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(product.UserId))
+                {
+                    // Optional: Fehler werfen oder User zur Anmeldung zwingen
+                    ModelState.AddModelError(string.Empty, "User ist nicht angemeldet.");
+                    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+                    return View(product);
+                }
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -70,6 +93,7 @@ namespace DrinkShop.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
             return View(product);
         }
+
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -167,23 +191,36 @@ namespace DrinkShop.Controllers
         [AllowAnonymous]
         public IActionResult LiveSearch(string query)
         {
+            var userIsAdmin = User.IsInRole("Admin");
+            var userIsAuthenticated = User.Identity.IsAuthenticated;
+
+            if (string.IsNullOrEmpty(query))
+            {
+                return Json(new List<object>());
+            }
+
+            var loweredQuery = query.ToLower();
+
             var results = _context.Products
-                .Include(p => p.Category)
-                .Where(p => p.Name.Contains(query))
+                .Where(p => p.Name.ToLower().Contains(loweredQuery))
                 .Select(p => new
                 {
                     id = p.Id,
                     name = p.Name,
+                    description = p.Description,
                     price = p.Price,
                     imageUrl = p.ImageUrl,
-                    description = p.Description,
-                    categoryName = p.Category.CategoryName
+                    categoryName = p.Category.CategoryName,
+                    isAdmin = userIsAdmin,
+                    isAuthenticated = userIsAuthenticated
                 })
-                .Take(20)
                 .ToList();
 
             return Json(results);
         }
+
+
+
 
     }
 }
