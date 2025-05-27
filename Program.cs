@@ -45,6 +45,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Products}/{action=Index}/{id?}")
     .WithStaticAssets();
-
+app.MapControllerRoute(
+    name: "liveSearch",
+    pattern: "Products/LiveSearch",
+    defaults: new { controller = "Products", action = "LiveSearch" }
+);
 
 app.Run();

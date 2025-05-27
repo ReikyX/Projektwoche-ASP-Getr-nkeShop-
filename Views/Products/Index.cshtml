@@ -10,7 +10,7 @@
     <a asp-action="Create" class="btn btn-success">+ Neues Produkt</a>
 </p>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div id="productList" class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
     {
         <div class="col">

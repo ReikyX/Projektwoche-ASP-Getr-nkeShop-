@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkShop.Data;
 using DrinkShop.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DrinkShop.Controllers
 {
@@ -18,6 +19,7 @@ namespace DrinkShop.Controllers
         {
             _context = context;
         }
+
 
         // GET: Products
         public async Task<IActionResult> Index()
@@ -160,5 +162,28 @@ namespace DrinkShop.Controllers
         {
             return _context.Products.Any(e => e.Id == id);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult LiveSearch(string query)
+        {
+            var results = _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.Name.Contains(query))
+                .Select(p => new
+                {
+                    id = p.Id,
+                    name = p.Name,
+                    price = p.Price,
+                    imageUrl = p.ImageUrl,
+                    description = p.Description,
+                    categoryName = p.Category.CategoryName
+                })
+                .Take(20)
+                .ToList();
+
+            return Json(results);
+        }
+
     }
 }
