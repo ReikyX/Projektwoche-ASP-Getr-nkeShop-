@@ -43,10 +43,12 @@
 							<!-- Gast oder anderer Benutzer -->
 							@if (isAuthenticated)
 							{
-								<form class="add-to-cart-form" data-product-id="@item.Id" method="post" action="@Url.Action("AddToCart", "CartItems")">
-									<input type="hidden" name="productId" value="@item.Id" />
-									<button type="submit" class="btn btn-sm btn-success ms-auto">🛒 In den Warenkorb</button>
-								</form>
+								<div class="ms-auto">
+									<form class="add-to-cart-form" data-product-id="@item.Id" method="post" action="@Url.Action("AddToCart", "CartItems")">
+										<input type="hidden" name="productId" value="@item.Id" />
+										<button type="submit" class="btn btn-sm btn-success">🛒 In den Warenkorb</button>
+									</form>
+								</div>
 							}
 							else
 							{
