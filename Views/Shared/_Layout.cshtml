@@ -19,8 +19,8 @@
 
     <!-- Header / Navbar -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-gradient shadow-sm">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-gradient py-3">
+            <div class="container align-items-center d-flex">
                 <a class="navbar-brand fw-bold" asp-controller="Products" asp-action="Index">
                     <i class="bi bi-cup-straw"></i> DrinkShop
                 </a>
@@ -29,7 +29,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarMain">
+                <div class="collapse navbar-collapse align-items-center d-flex" id="navbarMain">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" asp-controller="Products" asp-action="Index">Produkte</a></li>
 
@@ -69,7 +69,7 @@
                         <li class="nav-item position-relative">
                             <a class="nav-link position-relative" asp-controller="CartItems" asp-action="Index" id="cart-link" title="Zum Warenkorb">
                                 <i class="bi bi-cart3 fs-5"></i>
-                                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                                <span id="cart-count" class="badge rounded-pill bg-warning text-dark">
                                     @(ViewBag.CartItemCount ?? 0)
                                 </span>
                             </a>

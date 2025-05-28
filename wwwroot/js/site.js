@@ -23,7 +23,7 @@
                 data.forEach(product => {
                     html += `
                     <div class="col">
-                        <div class="card h-100 shadow-sm">
+                        <div class="card h-100">
                             <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                             <div class="card-body">
                                 <h5 class="card-title">${product.name}</h5>
