@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<DrinkShop.Models.Product>
 
 @{
-	ViewData["Title"] = "Produkte";
+	ViewData["Title"] = "Produkte"; // Titel der Seite
 
+	// Benutzerinformationen auslesen
 	var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-	var isAdmin = User.IsInRole("Admin");
-	var isAuthenticated = User.Identity.IsAuthenticated;
+	var isAdmin = User.IsInRole("Admin");                     // Prüft, ob der Benutzer Admin ist
+	var isAuthenticated = User.Identity.IsAuthenticated;      // Prüft, ob der Benutzer eingeloggt ist
 }
 <div class="container py-4">
 	<h1 class="gradient-text">Unsere Getränke</h1>
@@ -13,10 +14,25 @@
 
 	@if (isAdmin)
 	{
-		<p class="text-end">
-			<a asp-action="Create" class="btn btn-success">+ Neues Produkt</a>
-		</p>
+		<div class="d-flex justify-content-between mb-3">
+			<div>
+				<a asp-action="Index" asp-controller="Categories" class="btn btn-outline-primary">Alle Kategorien</a>
+			</div>
+			<div>
+				<a asp-action="Create" asp-controller="Products" class="btn btn-success me-2">+ Neues Produkt</a>
+				<a asp-action="Create" asp-controller="Categories" class="btn btn-success">+ Neue Kategorie</a>
+			</div>
+		</div>
 	}
+
+	<!-- Ladespinner -->
+	<div id="loader" class="text-center my-3" style="display: none;">
+		<div class="spinner-border text-primary" role="status">
+			<span class="visually-hidden">Lädt...</span>
+		</div>
+	</div>
+
+	<!-- Produktliste -->
 	<div id="productList" class="row row-cols-1 row-cols-md-3 g-4">
 		@foreach (var item in Model)
 		{
@@ -34,6 +50,7 @@
 						@if (isAdmin || item.UserId == currentUserId)
 						{
 							<!-- Admin oder Besitzer -->
+							<!-- Kann Daten ändern, hinzufügen oder löschen -->
 							<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
 							<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Bearbeiten</a>
 							<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Löschen</a>
@@ -43,6 +60,7 @@
 							<!-- Gast oder anderer Benutzer -->
 							@if (isAuthenticated)
 							{
+								<!-- Eingeloggter Benutzer kann Produkt zum Warenkorb hinzufügen -->
 								<div class="ms-auto">
 									<form class="add-to-cart-form" data-product-id="@item.Id" method="post" action="@Url.Action("AddToCart", "CartItems")">
 										<input type="hidden" name="productId" value="@item.Id" />
@@ -52,12 +70,12 @@
 							}
 							else
 							{
+								<!-- Nicht eingeloggter Benutzer wird zum Login weitergeleitet -->
 								<a class="btn btn-sm btn-success w-100" asp-controller="Account" asp-action="Login">
 									🛒 Jetzt einloggen um zu bestellen
 								</a>
 							}
 						}
-
 					</div>
 				</div>
 			</div>
@@ -66,6 +84,7 @@
 </div>
 @section Scripts {
 	<script>
+		// Dropdown zur Filterung nach Kategorie (optional)
 		document.getElementById('categoryFilter')?.addEventListener('change', function () {
 			const selectedCategoryId = this.value;
 			const url = selectedCategoryId

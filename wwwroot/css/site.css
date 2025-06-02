@@ -4,25 +4,27 @@
 
 /* Fonts */
 body {
-    font-family: 'Lato', sans-serif;
-    font-size: 16px;
-    color: #222;
-    background-color: #f4f4f4;
-    margin-bottom: 60px;
+    font-family: 'Lato', sans-serif; /* Standard-Schriftart */
+    font-size: 16px; /* Grundschriftgröße */
+    color: #222; /* Textfarbe */
+    background-color: #f4f4f4; /* Seitenhintergrund */
+    margin-bottom: 60px; /* Platz nach unten – nützlich z.?B. für Footer */
 }
 
+/* Große, animierte Überschrift mit Farbverlauf */
 .gradient-text {
     position: relative;
     overflow: hidden;
     font-weight: 900;
     font-size: 5rem;
-    background: linear-gradient( 270deg, #4f4f4f, #d1c26a, #cda34f, #d1c26a, #4f4f4f );
+    background: linear-gradient( 270deg, #4f4f4f, #d1c26a, #cda34f, #d1c26a, #4f4f4f ); /* Farbverlauf von dunkel nach golden */
     background-size: 600% 600%;
     animation: gradientShift 20s ease-in-out infinite;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
+    /* Glüheffekt */
     text-shadow: 1px 1px 5px rgba(255, 215, 100, 0.5), 0 0 10px rgba(255, 215, 100, 0.2), 0 0 20px rgba(255, 215, 100, 0.1);
     -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
     text-align: center;
@@ -30,7 +32,7 @@ body {
     user-select: none;
     will-change: background-position;
 }
-
+    /* Animierter Glanz-Effekt über die Schrift */
     .gradient-text::after {
         content: "";
         position: absolute;
@@ -44,6 +46,7 @@ body {
         pointer-events: none;
     }
 
+/* Für Glanzanimation */
 @keyframes shine {
     0% {
         left: -75%;
@@ -53,7 +56,7 @@ body {
         left: 100%;
     }
 }
-
+/* Farbverlauf wandert hin und zurück */
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -75,7 +78,8 @@ body {
         background-position: 0% 50%;
     }
 }
-/* Navbar Edle Variante */
+
+/* Größe, Abstand, Ausrichtung */
 .navbar {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -96,11 +100,13 @@ body {
     gap: 1rem;
 }
 
+/* Edler Verlauf mit Schatten */
 .navbar-gradient {
     background: linear-gradient(125deg, #000000, #cda34f, #000000);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.75);
 }
 
+/* Serifenschrift für Logo */
 .navbar .navbar-brand {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;

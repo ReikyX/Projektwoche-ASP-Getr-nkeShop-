@@ -1,126 +1,132 @@
 ﻿<!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - DrinkShop</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>@ViewData["Title"] - DrinkShop</title> <!-- Titel der Seite (wird dynamisch über ViewData gesetzt) -->
+	<!-- Bootstrap CSS: Stylesheet für das responsive Design und UI-Komponenten -->
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<!-- Bootstrap Icons von CDN (für Symbole wie z.B. das Warenkorb-Icon) -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!-- Bootstrap Icons CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DrinkShop.styles.css" asp-append-version="true" />
+	<!-- Eigene Stylesheet-Dateien mit Versionierung (um Browser-Cache-Probleme zu vermeiden) -->
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+
+<!-- Stellt sicher, dass der Body mindestens die volle Höhe einnimmt -->
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Header / Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-gradient py-3">
-            <div class="container align-items-center d-flex">
-                <a class="navbar-brand fw-bold" asp-controller="Products" asp-action="Index">
-                    <i class="bi bi-cup-straw"></i> DrinkShop
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
-                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+	<!-- Header / Navbar -->
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-gradient py-3">
+			<!-- Bootstrap Navbar, expandiert bei "lg" und größer -->
+			<div class="container align-items-center d-flex">
+				<!-- Container mit Flexbox zur Ausrichtung von Logo und Inhalt -->
+				<a class="navbar-brand fw-bold" asp-controller="Products" asp-action="Index">
+					<i class="bi bi-cup-straw"></i> DrinkShop
+				</a>
+				<!-- Burger-Menü-Schalter öffnet oder schließt das Menü bei kleineren Geräten -->
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+						aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-                <div class="collapse navbar-collapse align-items-center d-flex" id="navbarMain">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Products" asp-action="Index">Produkte</a></li>
+				<div class="collapse navbar-collapse" id="navbarMain">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link" asp-controller="Products" asp-action="Index">Produkte</a></li>
 
-                        <!-- Kategorien Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Kategorien
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
-                                <li>
-                                    <a class="dropdown-item @(ViewBag.SelectedCategory == null ? "active" : "")"
-                                       asp-controller="Products" asp-action="Index" asp-route-categoryId="">
-                                        Alle Kategorien
-                                    </a>
-                                </li>
-                                @if (ViewBag.Categories != null)
-                                {
-                                    var categories = ViewBag.Categories as List<DrinkShop.Models.Category>;
-                                    if (categories != null)
-                                    {
-                                        foreach (var category in categories)
-                                        {
-                                            <li>
-                                                <a class="dropdown-item @(category.Id == (int?)ViewBag.SelectedCategory ? "active" : "")"
-                                                   asp-controller="Products" asp-action="Index" asp-route-categoryId="@category.Id">
-                                                    @category.CategoryName
-                                                </a>
-                                            </li>
-                                        }
-                                    }
-                                }
-                            </ul>
-                        </li>
-
-
-                        <!-- Warenkorb -->
-                        <li class="nav-item position-relative">
-                            <a class="nav-link position-relative" asp-controller="CartItems" asp-action="Index" id="cart-link" title="Zum Warenkorb">
-                                <i class="bi bi-cart3 fs-5"></i>
-                                <span id="cart-count" class="badge rounded-pill bg-warning text-dark">
-                                    @(ViewBag.CartItemCount ?? 0)
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- Suchleiste -->
-                    <div class="d-flex position-relative me-3">
-                        <input id="liveSearch" class="form-control form-control-sm me-2" type="search" placeholder="Suche..." aria-label="Suche" autocomplete="off">
-                        <div id="searchResults" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
-                    </div>
+						<!-- Kategorien Dropdown (Öffnet ein Dropdown-Menü beim Klicken auf "Kategorien")-->
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Kategorien
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
+								<li>
+									<a class="dropdown-item @(ViewBag.SelectedCategory == null ? "active" : "")"
+									   asp-controller="Products" asp-action="Index" asp-route-categoryId="">
+										Alle Kategorien
+									</a>
+								</li>
+								@if (ViewBag.Categories != null)
+								{
+									var categories = ViewBag.Categories as List<DrinkShop.Models.Category>;
+									if (categories != null)
+									{
+										foreach (var category in categories)
+										{
+											<li>
+												<a class="dropdown-item @(category.Id == (int?)ViewBag.SelectedCategory ? "active" : "")"
+												   asp-controller="Products" asp-action="Index" asp-route-categoryId="@category.Id">
+													@category.CategoryName
+												</a>
+											</li>
+										}
+									}
+								}
+							</ul>
+						</li>
 
 
+						<!-- Warenkorb -->
+						<li class="nav-item position-relative">
+							<a class="nav-link position-relative" asp-controller="CartItems" asp-action="Index" id="cart-link" title="Zum Warenkorb">
+								<i class="bi bi-cart3 fs-5"></i>
+								<span id="cart-count" class="badge rounded-pill bg-warning text-dark">
+									@(ViewBag.CartItemCount ?? 0) <!-- Zeigt Anzahl der Artikel im Warenkorb -->
+								</span>
+							</a>
+						</li>
+					</ul>
 
-                    <!-- Auth Buttons -->
-                    <div class="d-flex">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <form method="post" asp-controller="Account" asp-action="Logout" class="d-flex">
-                                <button class="btn btn-outline-warning btn-sm" type="submit">Logout</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <a class="btn btn-outline-light btn-sm me-2" asp-controller="Account" asp-action="Login">Login</a>
-                            <a class="btn btn-warning btn-sm" asp-controller="Account" asp-action="Register">Registrieren</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+				</div>
+			</div>
+			<div class="d-lg-flex align-items-center ms-auto gap-2">
 
-    <!-- Main Content -->
-    <main class="flex-fill">
-        <div class="container py-4">
-            @RenderBody()
-        </div>
-    </main>
+				<!-- Suchleiste -->
+				<div class="d-flex position-relative me-3">
+					<input id="liveSearch" class="form-control form-control-sm me-2" type="search" placeholder="Suche..." aria-label="Suche" autocomplete="on">
+					<div id="searchResults" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
+				</div>
 
-    <!-- Footer -->
-    <footer class="bg-light text-center text-muted py-3 border-top mt-auto">
-        <div class="container">
-            &copy; 2025 DrinkShop • <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Datenschutz</a>
-        </div>
-    </footer>
 
-    <!-- Scripts -->
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+				<!-- Auth Buttons -->
+				<div class="d-flex">
+					@if (User.Identity.IsAuthenticated)
+					{
+						<form method="post" asp-controller="Account" asp-action="Logout" class="d-flex">
+							<button class="btn btn-outline-warning btn-sm" type="submit">Logout</button>
+						</form>
+					}
+					else
+					{
+						<a class="btn btn-outline-light btn-sm me-2" asp-controller="Account" asp-action="Login">Login</a>
+						<a class="btn btn-warning btn-sm" asp-controller="Account" asp-action="Register">Registrieren</a>
+					}
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<!-- Main Content -->
+	<main class="flex-fill">
+		<div class="container py-4">
+			@RenderBody()
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer class="bg-light text-center text-muted py-3 border-top mt-auto">
+		<div class="container">
+			&copy; 2025 DrinkShop • <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Datenschutz</a>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="/lib/jquery/dist/jquery.min.js"></script> <!-- jQuery-Bibliothek -->
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap-JS (inkl. Dropdowns, Collapse etc.) -->
+	<script src="~/js/site.js" asp-append-version="true"></script> <!-- Eigenes JS -->
+	@await RenderSectionAsync("Scripts", required: false) <!-- Optional zusätzliche Scripts in den Unterseiten -->
 </body>
 </html>
