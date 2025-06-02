@@ -1,17 +1,71 @@
-/**{
+ï»¿/**{
     border: 1px solid
 }*/
 
 /* Fonts */
 body {
     font-family: 'Lato', sans-serif; /* Standard-Schriftart */
-    font-size: 16px; /* Grundschriftgröße */
+    font-size: 16px; /* GrundschriftgrÃ¶ÃŸe */
     color: #222; /* Textfarbe */
     background-color: #f4f4f4; /* Seitenhintergrund */
-    margin-bottom: 60px; /* Platz nach unten – nützlich z.?B. für Footer */
+    margin-bottom: 60px; /* Platz nach unten â€“ nÃ¼tzlich z.â€¯B. fÃ¼r Footer */
 }
 
-/* Große, animierte Überschrift mit Farbverlauf */
+main {
+    margin-top: 150px;
+}
+
+/* Slideshow */
+/* Einheitliche BildhÃ¶he + Beschnitt bei Bedarf */
+.slideshow-img {
+    height: 500px;
+    object-fit: cover;
+    display: block;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.shadow-wrapper {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+
+}
+
+.shadow-overlay {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.95), inset 0 0 50px rgba(0, 0, 0, 0.95), inset 0 0 50px rgba(0, 0, 0, 1);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Optional: GrÃ¶ÃŸere PfeilflÃ¤che fÃ¼r bessere RandnÃ¤he */
+.carousel-control-prev,
+.carousel-control-next {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background-size: 60% 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* GroÃŸe, animierte Ãœberschrift mit Farbverlauf */
 .gradient-text {
     position: relative;
     overflow: hidden;
@@ -24,7 +78,7 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
-    /* Glüheffekt */
+    /* GlÃ¼heffekt */
     text-shadow: 1px 1px 5px rgba(255, 215, 100, 0.5), 0 0 10px rgba(255, 215, 100, 0.2), 0 0 20px rgba(255, 215, 100, 0.1);
     -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
     text-align: center;
@@ -32,7 +86,7 @@ body {
     user-select: none;
     will-change: background-position;
 }
-    /* Animierter Glanz-Effekt über die Schrift */
+    /* Animierter Glanz-Effekt Ã¼ber die Schrift */
     .gradient-text::after {
         content: "";
         position: absolute;
@@ -46,7 +100,7 @@ body {
         pointer-events: none;
     }
 
-/* Für Glanzanimation */
+/* FÃ¼r Glanzanimation */
 @keyframes shine {
     0% {
         left: -75%;
@@ -56,7 +110,7 @@ body {
         left: 100%;
     }
 }
-/* Farbverlauf wandert hin und zurück */
+/* Farbverlauf wandert hin und zurÃ¼ck */
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -79,7 +133,7 @@ body {
     }
 }
 
-/* Größe, Abstand, Ausrichtung */
+/* GrÃ¶ÃŸe, Abstand, Ausrichtung */
 .navbar {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -106,7 +160,7 @@ body {
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.75);
 }
 
-/* Serifenschrift für Logo */
+/* Serifenschrift fÃ¼r Logo */
 .navbar .navbar-brand {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
@@ -141,11 +195,11 @@ body {
     position: relative;
 }
 
-/* Badge bleibt schön sichtbar */
+/* Badge bleibt schÃ¶n sichtbar */
 #cart-count {
     position: absolute;
-    top: 6px; 
-    right: -13px; 
+    top: 6px;
+    right: -13px;
     transform: none;
     z-index: 10;
 }
@@ -200,6 +254,7 @@ body {
     color: #fff;
     font-weight: 500;
 }
+
 .btn-warning {
     background-color: #cda34f;
     border: none;
@@ -217,6 +272,7 @@ body {
 
 /* Inputs */
 .form-control {
+    width: auto;
     border-radius: 0.375rem;
     border: 1px solid #ccc;
 }
@@ -261,11 +317,13 @@ body {
     font-weight: 500;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 dropdown:focus {
     border-color: #cda34f;
     box-shadow: 0 0 0 0.2rem rgba(205, 163, 79, 0.3);
     outline: none;
 }
+
 .dropdown-item {
     color: #f4f4f4;
     padding: 0.5rem 1.25rem;
@@ -276,6 +334,7 @@ dropdown:focus {
         color: #cda34f;
         border-radius: 5px;
     }
+
     .dropdown-item.active,
     .dropdown-item.active:focus,
     .dropdown-item.active:hover {
@@ -309,7 +368,6 @@ footer {
         text-align: center;
         font-family: 'Playfair Display', serif;
         font-size: 2.25rem;
-        margin-bottom: 1.5rem;
         color: #cda34f;
         text-shadow: 0 0 4px rgba(205, 163, 79, 0.3);
     }
@@ -317,9 +375,11 @@ footer {
     .auth-form .form-group label {
         font-weight: 600;
         color: #333;
+        margin-top: 1rem;
     }
 
     .auth-form .form-control {
+        width: 100%;
         border-radius: 0.5rem;
         border: 1px solid #ccc;
         transition: box-shadow 0.3s ease;

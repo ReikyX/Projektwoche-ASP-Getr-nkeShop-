@@ -19,7 +19,7 @@
 
 	<!-- Header / Navbar -->
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-gradient py-3">
+		<nav class="navbar navbar-expand-lg navbar-gradient py-3 fixed-top">
 			<!-- Bootstrap Navbar, expandiert bei "lg" und größer -->
 			<div class="container align-items-center d-flex">
 				<!-- Container mit Flexbox zur Ausrichtung von Logo und Inhalt -->
@@ -27,7 +27,7 @@
 					<i class="bi bi-cup-straw"></i> DrinkShop
 				</a>
 				<!-- Burger-Menü-Schalter öffnet oder schließt das Menü bei kleineren Geräten -->
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+				<button class="navbar-toggler mt-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
 						aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -67,7 +67,6 @@
 							</ul>
 						</li>
 
-
 						<!-- Warenkorb -->
 						<li class="nav-item position-relative">
 							<a class="nav-link position-relative" asp-controller="CartItems" asp-action="Index" id="cart-link" title="Zum Warenkorb">
@@ -78,18 +77,14 @@
 							</a>
 						</li>
 					</ul>
-
 				</div>
 			</div>
-			<div class="d-lg-flex align-items-center ms-auto gap-2">
-
+			<div class="d-lg-flex align-items-center ms-auto me-lg-2 gap-2">
 				<!-- Suchleiste -->
-				<div class="d-flex position-relative me-3">
-					<input id="liveSearch" class="form-control form-control-sm me-2" type="search" placeholder="Suche..." aria-label="Suche" autocomplete="on">
+				<div class="d-flex position-relative me-2">
+					<input id="liveSearch" class="form-control form-control-sm me-2 mb-1 mt-1" type="search" placeholder="Suche..." aria-label="Suche" autocomplete="on">
 					<div id="searchResults" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
 				</div>
-
-
 
 				<!-- Auth Buttons -->
 				<div class="d-flex">

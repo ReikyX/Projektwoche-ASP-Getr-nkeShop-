@@ -9,6 +9,55 @@
 	var isAuthenticated = User.Identity.IsAuthenticated;      // Prüft, ob der Benutzer eingeloggt ist
 }
 <div class="container py-4">
+
+	<!-- Slideshow -->
+	<div id="productSlideshow" class="carousel slide carousel-fade mb-5" data-bs-ride="carousel" data-bs-interval="10000">
+
+		<div class="carousel-inner">
+			<!-- Slide 1 -->
+			<div class="carousel-item active">
+				<div class="shadow-wrapper">
+					<img src="https://cdn.pixabay.com/photo/2016/11/21/13/04/alcoholic-beverages-1845295_1280.jpg" class="d-block w-100 slideshow-img" alt="Slide 1" />
+					<div class="shadow-overlay"></div>
+				</div>
+			</div>
+			<!-- Slide 2 -->
+			<div class="carousel-item">
+				<div class="shadow-wrapper">
+					<img src="https://cdn.pixabay.com/photo/2018/08/22/10/15/bottles-3623317_1280.jpg" class="d-block w-100 slideshow-img" alt="Slide 2" />
+					<div class="shadow-overlay"></div>
+				</div>
+			</div>
+			<!-- Slide 3 -->
+			<div class="carousel-item">
+				<div class="shadow-wrapper">
+					<img src="https://cdn.pixabay.com/photo/2017/06/27/14/37/wines-2447514_1280.jpg" class="d-block w-100 slideshow-img" alt="Slide 3" />
+					<div class="shadow-overlay"></div>
+				</div>
+			</div>
+			<!-- Slide 4 -->
+			<div class="carousel-item">
+				<div class="shadow-wrapper">
+					<img src="https://cdn.pixabay.com/photo/2016/08/24/15/20/bar-1617190_1280.jpg" class="d-block w-100 slideshow-img" alt="Slide 4" />
+					<div class="shadow-overlay"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Navigation: Vorheriger Slide -->
+		<button class="carousel-control-prev" type="button" data-bs-target="#productSlideshow" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Zurück</span>
+		</button>
+
+		<!-- Navigation: Nächster Slide -->
+		<button class="carousel-control-next" type="button" data-bs-target="#productSlideshow" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Weiter</span>
+		</button>
+	</div>
+
+
 	<h1 class="gradient-text">Unsere Getränke</h1>
 
 
@@ -93,4 +142,4 @@
 			window.location.href = url;
 		});
 	</script>
-}
+		}
